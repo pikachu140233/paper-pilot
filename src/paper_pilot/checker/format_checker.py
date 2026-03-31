@@ -73,6 +73,9 @@ class FormatChecker:
         # 检查中英文摘要
         self._check_abstracts(content, rel)
 
+        # 检查图/表/公式编号连续性
+        self._check_numbering(content, rel)
+
     def _check_brace_pairs(self, content: str, rel: str) -> None:
         """检查 \\begin 和 \\end 是否配对"""
         begins: Dict[str, int] = {}
@@ -103,6 +106,34 @@ class FormatChecker:
             self._add("warning", rel, 0, "未检测到中文摘要部分")
         if not has_en:
             self._add("warning", rel, 0, "未检测到英文 Abstract 部分")
+
+    def _check_numbering(self, content: str, rel: str) -> None:
+        """检查图表编号连续性"""
+        # 提取所有 label，按图/表/公式/章分类
+        fig_labels = sorted(re.findall(r"\\label\{(fig:[^}]+)\}", content))
+        tab_labels = sorted(re.findall(r"\\label\{(tab:[^}]+)\}", content))
+        eq_labels = sorted(re.findall(r"\\label\{(eq:[^}]+)\}", content))
+
+        for prefix, labels in [("图", fig_labels), ("表", tab_labels)]:
+            if not labels:
+                continue
+            # 从 label 中提取数字编号
+            numbers = []
+            for lbl in labels:
+                m = re.search(r"(\d+)$", lbl)
+                if m:
+                    numbers.append(int(m.group(1)))
+            if numbers and numbers != list(range(1, max(numbers) + 1)):
+                self._add("warning", str(rel), 0,
+                          f"{prefix}编号可能不连续，检测到的编号: {numbers}")
+
+        # 检查被引用但不存在的 label（在所有 .tex 文件中交叉检查）
+        # 这里只检查当前文件内的 ref
+        refs = re.findall(r"\\(?:ref|eqref|autoref|cref|Cref)\{([^}]+)\}", content)
+        labels_all = set(re.findall(r"\\label\{([^}]+)\}", content))
+        for ref in refs:
+            if ref.strip() and ref.strip() not in labels_all:
+                self._add("warning", str(rel), 0, f"\\ref{{{ref.strip()}}} 引用的 label 在当前文件中未找到")
 
     # ── .bib 检查 ──────────────────────────────────────────────
 

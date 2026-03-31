@@ -10,6 +10,8 @@ from rich.console import Console
 from paper_pilot.commands.init import init
 from paper_pilot.commands.check import check
 from paper_pilot.commands.refs import refs
+from paper_pilot.commands.count import count
+from paper_pilot.commands.outline import outline
 
 console = Console()
 
@@ -41,6 +43,8 @@ def cli(ctx: click.Context) -> None:
 cli.add_command(init)
 cli.add_command(check)
 cli.add_command(refs)
+cli.add_command(count)
+cli.add_command(outline)
 
 
 def main() -> None:

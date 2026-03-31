@@ -4,6 +4,7 @@
 
 **Paper Pilot** 是一个命令行工具，帮助中国研究生快速创建、检查和管理 LaTeX 学位论文。
 
+[![CI](https://github.com/pikachu140233/paper-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/pikachu140233/paper-pilot/actions/workflows/ci.yml)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
@@ -21,6 +22,8 @@
 | `pp init` | 📄 初始化论文项目 | 一键生成完整的 LaTeX 论文框架 |
 | `pp check` | 🔍 格式检查 | 自动检查引用、标签、环境配对等 |
 | `pp refs` | 📚 参考文献管理 | 查看、验证、统计 .bib 参考文献 |
+| `pp count` | 📊 字数统计 | 分别统计中/英文字数，满足字数要求 |
+| `pp outline` | 📋 大纲提取 | 提取论文章节结构，查看文档大纲 |
 
 ### 为什么选择 Paper Pilot？
 
@@ -114,6 +117,30 @@ pp refs --check
 # 查看统计信息
 pp refs --stats
 ```
+
+### 字数统计
+
+```bash
+# 统计当前目录论文字数
+pp count
+
+# 统计指定目录
+pp count --path ./thesis
+```
+
+输出中文字符数、英文单词数，满足学位论文的字数要求。
+
+### 大纲提取
+
+```bash
+# 查看论文结构
+pp outline
+
+# 查看指定目录
+pp outline --path ./thesis
+```
+
+以树形结构展示论文章节目录。
 
 ## 🎯 论文模板特点
 

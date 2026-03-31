@@ -145,3 +145,60 @@ Only English abstract here.
         results = checker.run_all_checks()
         warnings = [r for r in results if r["level"] == "warning" and ".bib" in r["message"]]
         assert len(warnings) >= 1
+
+    def test_figure_numbering_gap(self, tmp_path):
+        """图编号不连续应报警告"""
+        tex = tmp_path / "main.tex"
+        tex.write_text(
+            r"""
+摘要：中文摘要
+\begin{abstract}English abstract\end{abstract}
+\begin{document}
+\label{fig:1}
+\label{fig:3}
+\end{document}
+""",
+            encoding="utf-8",
+        )
+        checker = FormatChecker(tmp_path)
+        results = checker.run_all_checks()
+        warnings = [r for r in results if "编号" in r["message"] and "图" in r["message"]]
+        assert len(warnings) >= 1
+
+    def test_figure_numbering_ok(self, tmp_path):
+        """图编号连续不应报警告"""
+        tex = tmp_path / "main.tex"
+        tex.write_text(
+            r"""
+摘要：中文摘要
+\begin{abstract}English abstract\end{abstract}
+\begin{document}
+\label{fig:1}
+\label{fig:2}
+\label{fig:3}
+\end{document}
+""",
+            encoding="utf-8",
+        )
+        checker = FormatChecker(tmp_path)
+        results = checker.run_all_checks()
+        number_warnings = [r for r in results if "编号" in r["message"]]
+        assert len(number_warnings) == 0
+
+    def test_undefined_ref(self, tmp_path):
+        """引用了不存在的 label 应报警告"""
+        tex = tmp_path / "main.tex"
+        tex.write_text(
+            r"""
+摘要：中文摘要
+\begin{abstract}English abstract\end{abstract}
+\begin{document}
+见图~\ref{fig:nonexistent}所示。
+\end{document}
+""",
+            encoding="utf-8",
+        )
+        checker = FormatChecker(tmp_path)
+        results = checker.run_all_checks()
+        ref_warnings = [r for r in results if "fig:nonexistent" in r["message"]]
+        assert len(ref_warnings) >= 1
