@@ -1,0 +1,165 @@
+% !TEX program = xelatex
+% Paper Pilot - 中国研究生学位论文模板
+% 编译方式: xelatex main.tex -> bibtex main -> xelatex main.tex -> xelatex main.tex
+
+\documentclass[12pt,a4paper,openany]{ctexart}
+
+% ── 页面设置 ──
+\usepackage[top=2.54cm, bottom=2.54cm, left=3.17cm, right=3.17cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% ── 数学 & 表格 ──
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}
+
+% ── 代码 ──
+\usepackage{listings}
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+}
+
+% ── 超链接 ──
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=blue,
+  urlcolor=blue,
+  bookmarksnumbered=true,
+}
+
+% ── 页眉页脚 ──
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── 参考文献样式 (GB/T 7714) ──
+% 使用时取消下行注释，需安装 gbt7714-bibtex-style
+% \bibliographystyle{gbt7714-numerical}
+
+% ── 信息设置 ──
+\newcommand{\thesisTitle}{{{TITLE}}}
+\newcommand{\thesisAuthor}{{{AUTHOR}}}
+\newcommand{\thesisDegree}{{{DEGREE}}学位论文}
+\newcommand{\thesisDate}{\today}
+\newcommand{\thesisUniversity}{XX大学}
+
+\begin{document}
+
+% ════════════════════════════════════════
+% 封面
+% ════════════════════════════════════════
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries \thesisUniversity}
+
+\vspace{2cm}
+
+{\LARGE\bfseries \thesisTitle}
+
+\vspace{3cm}
+
+{\Large
+\begin{tabular}{rl}
+学\qquad 院： & XX学院 \\[0.5em]
+专\qquad 业： & XX专业 \\[0.5em]
+学\qquad 生： & \thesisAuthor \\[0.5em]
+指导教师： & XX教授 \\[0.5em]
+\end{tabular}
+}
+
+\vfill
+
+{\large \thesisDate}
+
+\vspace{1cm}
+\end{titlepage}
+
+% ════════════════════════════════════════
+% 中文摘要
+% ════════════════════════════════════════
+\newpage
+\begin{center}
+{\Large\bfseries 摘\quad 要}
+\end{center}
+\vspace{0.5em}
+
+\noindent\textbf{摘要：}这里是中文摘要的内容。请在此处撰写论文的研究背景、研究方法、主要结果和结论。摘要应简明扼要，一般不超过500字。
+
+\vspace{1em}
+\noindent\textbf{关键词：}关键词1；关键词2；关键词3；关键词4
+
+\vspace{2em}
+\hrule
+\vspace{1em}
+
+\begin{center}
+{\Large\bfseries Abstract}
+\end{center}
+\vspace{0.5em}
+
+\noindent\textbf{Abstract:} Write your English abstract here. Briefly describe the research background, methodology, main results, and conclusions.
+
+\vspace{1em}
+\noindent\textbf{Keywords:} keyword1; keyword2; keyword3; keyword4
+
+% ════════════════════════════════════════
+% 目录
+% ════════════════════════════════════════
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+
+% ════════════════════════════════════════
+% 正文
+% ════════════════════════════════════════
+\input{chapters/introduction}
+\input{chapters/literature_review}
+\input{chapters/methodology}
+\input{chapters/results}
+\input{chapters/conclusion}
+
+% ════════════════════════════════════════
+% 参考文献
+% ════════════════════════════════════════
+\newpage
+\bibliographystyle{plain}
+\bibliography{references}
+
+% ════════════════════════════════════════
+% 附录
+% ════════════════════════════════════════
+\newpage
+\appendix
+\chapter{附录A：补充数据}
+这里是附录内容。
+
+% ════════════════════════════════════════
+% 致谢
+% ════════════════════════════════════════
+\newpage
+\begin{center}
+{\Large\bfseries 致\quad 谢}
+\end{center}
+\vspace{1em}
+
+在此感谢导师的悉心指导，感谢同学的帮助与支持。
+
+\end{document}
